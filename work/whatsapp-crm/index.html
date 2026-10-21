@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Case study: a 15-agent WhatsApp and Telegram platform</title>
+<meta name="description" content="How a 15-agent WhatsApp and Telegram operations platform for a Hyderabad real-estate brokerage was built: single-writer data spine, owner approvals, and heartbeat tokens cut 91%.">
+<meta name="author" content="Dr. Ravi Teja Thiriveedhi">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#0B5F65">
+<link rel="canonical" href="https://raviteja2k2k.github.io/work/whatsapp-crm/">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/site.css">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Case study: a 15-agent WhatsApp and Telegram platform">
+<meta property="og:description" content="How a 15-agent WhatsApp and Telegram operations platform for a Hyderabad real-estate brokerage was built: single-writer data spine, owner approvals, and heartbeat tokens cut 91%.">
+<meta property="og:url" content="https://raviteja2k2k.github.io/work/whatsapp-crm/">
+<meta property="og:image" content="https://raviteja2k2k.github.io/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Dr. Ravi Teja Thiriveedhi: clinician building governed healthcare AI">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="bar">
+  <a class="brand" href="/">Dr. Ravi Teja Thiriveedhi</a>
+  <nav class="nav" aria-label="Main"><a href="/">Home</a><a href="/work/whatsapp-crm/" aria-current="page">Case study</a><a href="/clinical/">Clinical record</a><a href="https://github.com/sterilefield">Open source</a><a href="/#contact">Contact</a></nav>
+</header>
+<main class="wrap" id="main">
+  <header class="hero">
+    <span class="eyebrow">Case study · Production AI · Live since June 2026</span>
+    <h1>A 15-agent WhatsApp and Telegram platform for a real-estate brokerage</h1>
+    <p class="lede">Enquiries are captured, qualified, routed, matched to properties and followed up by AI agents. The owner approves anything sensitive, gets a daily digest on Telegram and sees every lead in one dashboard. I designed, built and operate the whole system.</p>
+    <div class="meta"><span>Client <b>Hyderabad property brokerage</b> (anonymised)</span><span>Role <b>Architect, builder, operator</b></span></div>
+  </header>
+
+  <div class="figs wide" role="list" aria-label="Key figures">
+    <div class="fig" role="listitem"><span class="n">460+</span><span class="l">leads handled</span></div>
+    <div class="fig" role="listitem"><span class="n">8,688</span><span class="l">customer interactions logged</span></div>
+    <div class="fig" role="listitem"><span class="n">−91%</span><span class="l">heartbeat token spend</span></div>
+    <div class="fig" role="listitem"><span class="n">7+ h</span><span class="l">owner time saved a week (client-confirmed)</span></div>
+  </div>
+
+  <section aria-labelledby="problem">
+    <span class="eyebrow">The problem</span>
+    <h2 id="problem">Enquiries arrived faster than people could answer them</h2>
+    <div class="prose">
+      <p>Buyers write to the brokerage on WhatsApp and Telegram at all hours, often in Telugu written in English letters. Some enquiries went unanswered and some follow-ups slipped.</p>
+      <p>The brief: recover missed enquiries, keep a human in charge of anything sensitive, and run AI at a cost a small business can carry.</p>
+    </div>
+  </section>
+
+  <section class="wide" aria-labelledby="flow">
+    <span class="eyebrow">How it works</span>
+    <h2 id="flow">One message, five stages</h2>
+    <ol class="flow">
+      <li><span class="k">STAGE 1</span><h3>Capture</h3><p>WhatsApp Business API webhook with a signature check that fails closed and de-duplication; Telegram through a bot bridge.</p></li>
+      <li><span class="k">STAGE 2</span><h3>Record</h3><p>One writer service saves every write to SQLite, the source of truth. A Google Sheet is the owner's mirror, never the database.</p></li>
+      <li><span class="k">STAGE 3</span><h3>Qualify</h3><p>Rules first, then a small tool-less, memory-less extraction model turns each message into structured lead details.</p></li>
+      <li><span class="k">STAGE 4</span><h3>Act</h3><p>Routing, semantic property matching on local embeddings, six lead-risk scans and follow-ups on a written cadence.</p></li>
+      <li><span class="k">STAGE 5</span><h3>Report</h3><p>A deterministic daily digest on Telegram and an owner dashboard behind login.</p></li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="cost">
+    <span class="eyebrow">Cost engineering</span>
+    <h2 id="cost">The same work on 91% fewer heartbeat tokens</h2>
+    <div class="chart" role="img" aria-label="Heartbeat tokens per day fell from 12.0 million to 1.0 million">
+      <div class="bar-row"><span>Before</span><div class="track"><div class="fill" style="width:100%"></div></div><span class="v">12.0 M/day</span></div>
+      <div class="bar-row"><span>After 23 Sep</span><div class="track"><div class="fill after" style="width:8.33%"></div></div><span class="v">1.0 M/day</span></div>
+    </div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th scope="col">Change</th><th scope="col">Effect</th></tr></thead>
+      <tbody>
+        <tr><td>Heartbeat intervals set per agent; 11 agents moved to scheduled runs only; a zero-token check wakes a model only when something changed</td><td class="num">12.0 M → 1.0 M tokens a day</td></tr>
+        <tr><td>Extraction moved out of the full intake agent into a tool-less, memory-less extractor, with rule-based parsing first</td><td class="num">~38 k → ~4 k tokens a message<br>(1,177 turns, 0 errors)</td></tr>
+        <tr><td>Cache-friendly prompts</td><td class="num">76–79% from cache</td></tr>
+        <tr><td>Monitoring, digests and project history written as plain code</td><td class="num">0 AI tokens</td></tr>
+        <tr><td>Privacy-aware fallback routing</td><td>Customer-data agents never fall back to providers that may train on prompts</td></tr>
+      </tbody>
+    </table></div>
+    <p class="muted">Result: ₹0 marginal API cost per lead (about ₹13 at list price). The 18 methods are written up in <a href="https://github.com/sterilefield/llm-token-economics">llm-token-economics</a>.</p>
+  </section>
+
+  <section aria-labelledby="human">
+    <span class="eyebrow">Safety and governance</span>
+    <h2 id="human">A human stays in charge</h2>
+    <div class="two">
+      <ul class="ticks">
+        <li>Engagement rules live in one versioned policy file: answer first, ask at most one or two questions, never state prices, legal status or RERA claims. Behaviour changes by editing the policy, not the code.</li>
+        <li>Follow-up cadence by lead temperature, quiet hours 21:00–09:00, and leads cool automatically after four ignored messages.</li>
+        <li>284 WhatsApp template follow-ups in four weeks, each approved by the owner in the dashboard. A cold-lead reactivation agent was built and deliberately kept off.</li>
+      </ul>
+      <ul class="ticks">
+        <li>Human takeover: when staff reply from the business number, the agents step back for 24 hours.</li>
+        <li>Owner notes on Telegram apply only when unambiguous; sensitive changes ask first, and every write returns an undo handle.</li>
+        <li>Every dashboard route needs login, with rate limits and an audit log. No customer data is pulled to my machines; backups stay on client-owned storage.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section aria-labelledby="rel">
+    <span class="eyebrow">Reliability</span>
+    <h2 id="rel">Built to recover what would otherwise be missed</h2>
+    <ul class="ticks">
+      <li>Single writer with a bounded lock, a journal, and a spool replayed every minute when the writer is busy; hourly snapshots and an AES-256 encrypted daily backup on client-owned storage. A restore drill passed.</li>
+      <li>A watchdog every 5 minutes with automatic rollback for the webhook sidecar, and a writer guardian that checks integrity, size and locks.</li>
+      <li>Outage recovery re-reads WhatsApp history in idle windows, and importers are idempotent by message id. A gap check once found about 20% of inbound messages missing; a gap importer was built to close it.</li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="lessons">
+    <span class="eyebrow">Lessons from 129 closed bugs</span>
+    <h2 id="lessons">What I carry into every build</h2>
+    <div class="two">
+      <div class="lesson"><q>Never route single-purpose model calls through a full agent.</q><p>Extraction went from about 38 k to 4 k tokens a message.</p></div>
+      <div class="lesson"><q>Deterministic checks first, a model only on change.</q><p>Most scheduled checks need no model at all.</p></div>
+      <div class="lesson"><q>Signature checks must fail closed.</q><p>A webhook that guesses can be forged.</p></div>
+      <div class="lesson"><q>A spreadsheet is a view, not a database.</q><p>One writer, provenance and a change log.</p></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="time">
+    <span class="eyebrow">Timeline, 2026</span>
+    <h2 id="time">Built over 154 days</h2>
+    <dl class="timeline">
+      <dt>19–21 May</dt><dd>Engagement policy written</dd>
+      <dt>29 May</dt><dd>First commits</dd>
+      <dt>15–29 Jun</dt><dd>WhatsApp live; security baseline</dd>
+      <dt>2–5 Jul</dt><dd>Owner dashboard live</dd>
+      <dt>1–13 Aug</dt><dd>Messaging tiers, human takeover, audit and resilience layer</dd>
+      <dt>23 Sep</dt><dd>Token optimisation: heartbeat spend −91%</dd>
+      <dt>24–25 Sep</dt><dd>Single-writer database, self-healing jobs; 65-chapter staff runbook in English, Hindi and Telugu</dd>
+      <dt>Oct</dt><dd>Operating with 15 agents deployed (heartbeat, scheduled or on demand)</dd>
+    </dl>
+    <p class="note">Build record: 95 commits, 137 k lines added across 806 files, 129 bugs closed with root cause, 61 of 75 lessons promoted into a reusable delivery playbook. The code was written by AI coding agents from my specifications; I owned the architecture, review, testing, release and operations.</p>
+  </section>
+
+  <div class="bridge">
+    <span class="eyebrow">Why a dentist built this</span>
+    <h2 class="sr-hidden">Why a dentist built this</h2>
+    <p>The rules that keep a clinic safe kept this system safe: written protocols, a root cause for every incident, and a human who signs off on anything that matters. I now apply them to healthcare AI.</p>
+    <div class="cta"><a class="btn" href="/#contact">Get in touch</a><a class="btn ghost" href="https://github.com/sterilefield/whatsapp-agent-case-study">Full write-up on GitHub</a></div>
+  </div>
+  <p class="note">Figures come from the platform's own dashboards and logs, 2026, and are shared with the client's permission. The client is anonymised; no customer data, code, prompts or configuration are published. The platform is presented as delivered and operating; it is not claimed to have driven sales.</p>
+</main>
+<footer class="foot">
+  <span>Dr. Ravi Teja Thiriveedhi · Hyderabad, India (IST)</span>
+  <nav aria-label="Elsewhere"><a href="https://www.linkedin.com/in/dr-ravi-teja-thiriveedhi/" rel="me noopener">LinkedIn</a><a href="https://github.com/Raviteja2k2k" rel="me noopener">GitHub</a><a href="https://github.com/sterilefield" rel="noopener">sterilefield</a><a href="mailto:dr.raviteja1981.new@gmail.com">dr.raviteja1981.new@gmail.com</a></nav>
+</footer>
+<script src="/assets/site.js" defer></script>
+</body>
+</html>
